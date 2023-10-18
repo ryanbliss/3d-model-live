@@ -90,6 +90,13 @@ export const OfflineModelViewer: FC = () => {
 
     return (
         <>
+            <ModelViewerScene
+                cameraRef={cameraRef}
+                modelFileName="plane.glb"
+                onReadyObservable={(scene: any) => {
+                    sceneRef.current = scene;
+                }}
+            />
             {!!selectedMaterialName && (
                 <HexColorPicker
                     color={
@@ -106,13 +113,6 @@ export const OfflineModelViewer: FC = () => {
                     }}
                 />
             )}
-            <ModelViewerScene
-                cameraRef={cameraRef}
-                modelFileName="plane.glb"
-                onReadyObservable={(scene: any) => {
-                    sceneRef.current = scene;
-                }}
-            />
         </>
     );
 };
