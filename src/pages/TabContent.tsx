@@ -58,13 +58,10 @@ const LiveShareContentWrapper: FC = () => {
     const [host] = useState(
         IN_TEAMS ? LiveShareHost.create() : TestLiveShareHost.create()
     );
-    // Choose to only get sharing status in meetingStage.
-    // We use this to take control on meeting stage if isShareInitiator == true on first load.
-    const sharingStatus = useSharingStatus(FrameContexts.meetingStage);
     return (
         <LiveShareProvider joinOnLoad host={host}>
-            <LoadingErrorWrapper sharingStatus={sharingStatus}>
-                <LiveObjectViewer sharingStatus={sharingStatus} />
+            <LoadingErrorWrapper>
+                <LiveObjectViewer />
             </LoadingErrorWrapper>
         </LiveShareProvider>
     );
@@ -72,8 +69,7 @@ const LiveShareContentWrapper: FC = () => {
 
 const LoadingErrorWrapper: FC<{
     children?: ReactNode;
-    sharingStatus?: ISharingStatus;
-}> = ({ children, sharingStatus }) => {
+}> = ({ children }) => {
     const { joined, joinError } = useLiveShareContext();
     if (joinError) {
         return <Text>{joinError?.message}</Text>;
@@ -108,9 +104,7 @@ export const ALLOWED_ROLES = [
  * useLiveFollowMode is used to enable following/presenting.
  * useLiveCanvas is used to enable synchronized pen/highlighter/cursors atop the model when in follow mode.
  */
-const LiveObjectViewer: FC<{
-    sharingStatus: ISharingStatus | undefined;
-}> = ({ sharingStatus }) => {
+const LiveObjectViewer: FC = () => {
     // Babylon scene reference
     const sceneRef = useRef<Nullable<BabyScene>>(null);
     // Babylon arc rotation camera reference
@@ -368,6 +362,9 @@ const LiveObjectViewer: FC<{
         };
     }, [onCameraViewMatrixChanged]);
 
+    // Choose to only get sharing status in meetingStage.
+    // We use this to take control on meeting stage if isShareInitiator == true on first load.
+    const sharingStatus = useSharingStatus(FrameContexts.meetingStage);
     // Start presenting if nobody is in control and local user isShareInitiator (meetings only)
     const hasInitiallyPresentedRef = useRef<boolean>(false);
     useEffect(() => {
