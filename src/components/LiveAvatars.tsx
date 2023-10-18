@@ -39,13 +39,13 @@ export const LiveAvatars: FC<ILiveAvatarsProps> = ({
 }) => {
     const onlineOrAwayUsers = allUsers.filter(
         (user) =>
-            user.displayName &&
+            user?.displayName &&
             (user.state === PresenceState.online ||
                 user.state === PresenceState.away)
     );
     const { inlineItems, overflowItems } = partitionAvatarGroupItems({
         items: onlineOrAwayUsers.map((user) => {
-            const displayName = user.displayName ?? "Unknown";
+            const displayName = user?.displayName ?? "Unknown";
             if (user.isLocalUser) {
                 return displayName + " (You)";
             }

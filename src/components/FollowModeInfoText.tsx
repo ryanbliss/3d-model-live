@@ -48,11 +48,11 @@ export const FollowModeInfoText: FC = () => {
                 const nonLocalUser = allUsers.filter(
                     (user) => !user.isLocalUser
                 )[0];
-                return `Presenting to ${nonLocalUser.displayName}`;
+                return `Presenting to ${nonLocalUser?.displayName}`;
             }
             case FollowModeType.activeFollowers: {
                 if (localFollowers.length === 1) {
-                    return `${localFollowers[0].displayName} is following you`;
+                    return `${localFollowers[0]?.displayName} is following you`;
                 }
                 return `${localFollowers.length} others are following you`;
             }
